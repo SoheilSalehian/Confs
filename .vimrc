@@ -5,7 +5,7 @@ let mapleader=","
 " Colors {{{
 syntax enable
 set background=dark
-colorscheme solarized 
+colorscheme solarized
 "" Font {{{
 set guifont=Monaco:h13
 "}}}"
@@ -22,6 +22,7 @@ set backspace=indent,eol,start
 " UI Layout {{{
 set number              " show line numbers
 set showcmd             " show command in bottom bar
+set nocursorline          " highlight current line
 set wildmenu
 "set lazyredraw
 set showmatch           " higlight matching parenthesis
@@ -317,9 +318,11 @@ let g:config_Beautifier['js'].indent_size = '2'
 
 "latex-box
 "
+command! TexBR exec ":Latexmk" | exec ":LatexView"    
 autocmd Filetype tex setlocal ts=2 sts=2 sw=2
-au Filetype tex nnoremap <leader>r :LatexView <CR>
-au Filetype tex nnoremap <leader>b :Latexmk<CR>
+au Filetype tex nnoremap <leader>b :Latexmk <CR>
+" au Filetype tex nnoremap <leader>r :Latexmk <bar> %s/:LatexView  <CR>
+au Filetype tex nnoremap <leader>r :TexBR  <CR>
 let g:tex_flavor='latex'
 let g:Tex_TreatMacViewerAsUNIX = 1
 let g:Tex_ExecuteUNIXViewerInForeground = 1

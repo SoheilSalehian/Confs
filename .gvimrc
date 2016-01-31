@@ -1,14 +1,17 @@
 " Douglas Black
+let g:session_autosave = 'yes'
+let g:session_autoload = 'yes'
+let mapleader=","
 " Colors {{{
 syntax enable
 set background=dark
 colorscheme solarized
-" let g:molokai_original=1
 "" Font {{{
-set guifont=Monaco:h12
+set guifont=Monaco:h13
 "}}}"
 "" ctrlp {{{
 set runtimepath^=~/.vim/bundle/ctrlp.vim
+let g:ctrlp_open_new_file = 'v'
 "}}}
 "
 " Misc {{{
@@ -227,9 +230,113 @@ function! s:NextTextObject(motion, dir)
  
   exe "normal! ".a:dir.c."v".a:motion.c
 endfunction
+
 " }}}”
 " Pathogen
 execute pathogen#infect()
 call pathogen#helptags() " generate helptags for everything in ‘runtimepath’
 syntax on
+
+set nocompatible
+syntax on
 filetype plugin indent on
+set tabstop=2
+set shiftwidth=2
+set expandtab
+" Moving lines up/down
+filetype plugin indent on
+nnoremap <S-Up> :m-2<CR>
+nnoremap <S-Down> :m+<CR>
+inoremap <S-Up> <Esc>:m-2<CR>
+inoremap <S-Down> <Esc>:m+<CR>
+
+" fugitive git bindings
+nnoremap <space>ga :Git add %:p<CR><CR>
+nnoremap <space>gs :Gstatus<CR>
+nnoremap <space>gc :Gcommit -v -q<CR>
+nnoremap <space>gt :Gcommit -v -q %:p<CR>
+nnoremap <space>gd :Gdiff<CR>
+nnoremap <space>ge :Gedit<CR>
+nnoremap <space>gr :Gread<CR>
+nnoremap <space>gw :Gwrite<CR><CR>
+nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <space>gp :Ggrep<Space>
+nnoremap <space>gm :Gmove<Space>
+nnoremap <space>gb :Git branch<Space>
+nnoremap <space>go :Git checkout<Space>
+
+autocmd FileType python nnoremap <buffer> <F9> :exec '!python' shellescape(@%, 1)<cr>
+nmap <silent> <A-Up> :wincmd k<CR>
+nmap <silent> <A-Down> :wincmd j<CR>
+nmap <silent> <A-Left> :wincmd h<CR>
+nmap <silent> <A-Right> :wincmd l<CR>
+let g:gitgutter_eager = 0
+" let g:gitgutter_realtime = 0
+autocmd Filetype html setlocal ts=2 sts=2 sw=2
+autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
+autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
+autocmd Filetype python setlocal ts=2 sts=2 sw=2
+
+imap jj <Esc>
+
+"Python specific
+autocmd FileType python nnoremap <leader>b :!python2.7 %<CR>
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+
+"Go specific
+"
+autocmd Filetype go setlocal ts=2 sts=2 sw=2
+au Filetype go nnoremap <leader>r :GoRun <CR>
+au Filetype go nnoremap <leader>b :GoBuild <CR>
+let g:go_fmt_command = "goimports"
+
+
+"Window switching
+function! MarkWindowSwap()
+    let g:markedWinNum = winnr()
+endfunction
+
+function! DoWindowSwap()
+    "Mark destination
+    let curNum = winnr()
+    let curBuf = bufnr( "%" )
+    exe g:markedWinNum . "wincmd w"
+    "Switch to source and shuffle dest->source
+    let markedBuf = bufnr( "%" )
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' curBuf
+    "Switch to dest and shuffle source->dest
+    exe curNum . "wincmd w"
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' markedBuf 
+endfunction
+
+nmap <leader>sw :call MarkWindowSwap()<CR>
+nmap <leader>mw :call DoWindowSwap()<CR>
+
+"jsbeautify
+autocmd FileType javascript noremap <leader>e  :call JsBeautify()<cr>
+autocmd FileType html noremap <leader>e  :call HtmlBeautify()<cr> 
+autocmd FileType css noremap <leader>e :call  CSSBeautify()<cr>
+let g:config_Beautifier = {}
+let g:config_Beautifier['js'] = {}
+let g:config_Beautifier['js'].indent_size = '2'
+
+
+"latex-box
+"
+command! TexBR exec ":Latexmk" | exec ":LatexView"    
+autocmd Filetype tex setlocal ts=2 sts=2 sw=2
+au Filetype tex nnoremap <leader>b :Latexmk <CR>
+" au Filetype tex nnoremap <leader>r :Latexmk <bar> %s/:LatexView  <CR>
+au Filetype tex nnoremap <leader>r :TexBR  <CR>
+let g:tex_flavor='latex'
+let g:Tex_TreatMacViewerAsUNIX = 1
+let g:Tex_ExecuteUNIXViewerInForeground = 1
+let g:Tex_ViewRule_ps = 'open -a Skim'
+let g:Tex_ViewRule_pdf = 'open -a /Applications/Skim.app'
+let g:Tex_ViewRule_dvi = 'open -a /Applications/texniscope.app'
+let g:Tex_IgnoredWarnings = 
+      \"Citation %.%# undefined"
