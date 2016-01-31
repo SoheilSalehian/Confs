@@ -265,14 +265,66 @@ let g:gitgutter_eager = 0
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
+autocmd Filetype python setlocal ts=2 sts=2 sw=2
+
+imap jj <Esc>
 
 "Python specific
-
-
+autocmd FileType python nnoremap <leader>b :!python2.7 %<CR>
+set expandtab
+set shiftwidth=2
+set softtabstop=2
 
 "Go specific
 "
 autocmd Filetype go setlocal ts=2 sts=2 sw=2
 au Filetype go nnoremap <leader>r :GoRun <CR>
 au Filetype go nnoremap <leader>b :GoBuild <CR>
-" autocmd FileType go map <F9> :!go run %<CR>
+let g:go_fmt_command = "goimports"
+
+
+"Window switching
+function! MarkWindowSwap()
+    let g:markedWinNum = winnr()
+endfunction
+
+function! DoWindowSwap()
+    "Mark destination
+    let curNum = winnr()
+    let curBuf = bufnr( "%" )
+    exe g:markedWinNum . "wincmd w"
+    "Switch to source and shuffle dest->source
+    let markedBuf = bufnr( "%" )
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' curBuf
+    "Switch to dest and shuffle source->dest
+    exe curNum . "wincmd w"
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' markedBuf 
+endfunction
+
+nmap <leader>sw :call MarkWindowSwap()<CR>
+nmap <leader>mw :call DoWindowSwap()<CR>
+
+"jsbeautify
+autocmd FileType javascript noremap <leader>e  :call JsBeautify()<cr>
+autocmd FileType html noremap <leader>e  :call HtmlBeautify()<cr> 
+autocmd FileType css noremap <leader>e :call  CSSBeautify()<cr>
+let g:config_Beautifier = {}
+let g:config_Beautifier['js'] = {}
+let g:config_Beautifier['js'].indent_size = '2'
+
+
+"latex-box
+"
+autocmd Filetype tex setlocal ts=2 sts=2 sw=2
+au Filetype tex nnoremap <leader>r :LatexView <CR>
+au Filetype tex nnoremap <leader>b :Latexmk<CR>
+let g:tex_flavor='latex'
+let g:Tex_TreatMacViewerAsUNIX = 1
+let g:Tex_ExecuteUNIXViewerInForeground = 1
+let g:Tex_ViewRule_ps = 'open -a Skim'
+let g:Tex_ViewRule_pdf = 'open -a /Applications/Skim.app'
+let g:Tex_ViewRule_dvi = 'open -a /Applications/texniscope.app'
+let g:Tex_IgnoredWarnings = 
+      \"Citation %.%# undefined"
