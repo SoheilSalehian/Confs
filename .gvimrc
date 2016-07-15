@@ -7,7 +7,7 @@ syntax enable
 set background=dark
 colorscheme solarized
 "" Font {{{
-set guifont=Monaco:h13
+set guifont=Consolas:h13
 "}}}"
 "" ctrlp {{{
 set runtimepath^=~/.vim/bundle/ctrlp.vim
@@ -325,18 +325,27 @@ let g:config_Beautifier['js'] = {}
 let g:config_Beautifier['js'].indent_size = '2'
 
 
+filetype plugin indent on
+let g:tex_flavor = 'latex'
+let g:tex_nine_config = {
+        \'compiler': 'pdflatex',
+        \'viewer': {'app':'open', 'target':'pdf'},
+\}
+
+ au Filetype tex noremap <buffer><silent> <LocalLeader>b :call tex_nine#Compile(0, b:tex_nine_config)<CR>
+ au Filetype tex noremap <buffer><silent> <LocalLeader>B :call tex_nine#Compile(1, b:tex_nine_config)<CR>
+ au Filetype tex noremap <buffer><silent> <LocalLeader>r :call tex_nine#ViewDocument()<CR>
 "latex-box
 "
-command! TexBR exec ":Latexmk" | exec ":LatexView"    
-autocmd Filetype tex setlocal ts=2 sts=2 sw=2
-au Filetype tex nnoremap <leader>b :Latexmk <CR>
-" au Filetype tex nnoremap <leader>r :Latexmk <bar> %s/:LatexView  <CR>
-au Filetype tex nnoremap <leader>r :TexBR  <CR>
-let g:tex_flavor='latex'
-let g:Tex_TreatMacViewerAsUNIX = 1
-let g:Tex_ExecuteUNIXViewerInForeground = 1
-let g:Tex_ViewRule_ps = 'open -a Skim'
-let g:Tex_ViewRule_pdf = 'open -a /Applications/Skim.app'
-let g:Tex_ViewRule_dvi = 'open -a /Applications/texniscope.app'
-let g:Tex_IgnoredWarnings = 
-      \"Citation %.%# undefined"
+" command! TexBR exec ":Latexmk" | exec ":LatexView"    
+" autocmd Filetype tex setlocal ts=2 sts=2 sw=2
+" au Filetype tex nnoremap <leader>b :Latexmk <CR>
+" " au Filetype tex nnoremap <leader>r :LatexView <CR>
+" au Filetype tex nnoremap <leader>r :TexBR  <CR>
+" let g:tex_flavor='latex'
+" let g:Tex_TreatMacViewerAsUNIX = 1
+" let g:Tex_ExecuteUNIXViewerInForeground = 1
+" let g:Tex_ViewRule_ps = 'open -a Skim'
+" let g:Tex_ViewRule_pdf = 'open -a /Applications/Skim.app'
+" let g:Tex_ViewRule_dvi = 'open -a /Applications/texniscope.app'
+" let g:Tex_GotoError=0
