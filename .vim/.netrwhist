@@ -1,8 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/Users/Soheil/Projects/OL/LocalFusion'
-let g:netrw_dirhist_2='/Users/Soheil/Projects/OL/LocalFusion/app'
-let g:netrw_dirhist_3='/Users/Soheil/Projects/OL/LocalFusion/app/controllers'
-let g:netrw_dirhist_4='/Users/Soheil/Projects/OL/Adforge2/app/controllers'
-let g:netrw_dirhist_5='/Users/Soheil/Projects/OL/Adforge2/app/controllers/admin'
-let g:netrw_dirhist_6='/Users/Soheil/Projects/OL/Adforge2'
